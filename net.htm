@@ -1,0 +1,1574 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head><script src="js/color-modes.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aplikasi khusus untuk modem orbit dan hilink">
+<meta name="author" content="Muhammad Yusuf">
+<meta name="generator" content="Hugo 0.115.4">
+<title>Huawei Manager v9</title>
+
+<style>
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .b-example-divider {
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+  }
+
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .btn-bd-primary {
+    --bd-violet-bg: #712cf9;
+    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--bd-violet-bg);
+    --bs-btn-border-color: var(--bd-violet-bg);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: #6528e0;
+    --bs-btn-hover-border-color: #6528e0;
+    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #5a23c8;
+    --bs-btn-active-border-color: #5a23c8;
+  }
+  .bd-mode-toggle {
+    z-index: 1500;
+  }
+</style>
+
+<!-- Bagian CSS -->
+<link href="css/navbar-static.css" rel="stylesheet">
+<link href="css/grid.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/main.css" rel="stylesheet">
+<!-- Akhir Bagian CSS -->
+
+<!-- Bagian JS -->
+<script src="js/emui-jquery.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/carrier.js"></script>
+<script src="js/login.js"></script>
+<script src="js/ptr.js"></script>
+<!-- Akhir Bagian JS -->
+
+</head>
+<body class="bg-dark" style="color:white">
+  
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+<div class="container-fluid">
+<form>
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Set IP" onclick="B4A.CallSub('setIP', true)">
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Login" onclick="B4A.CallSub('login', true)">
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Home" onclick="B4A.CallSub('freeBrowse', true)">
+<input type="submit" class="btn btn-danger rounded-pill px-2" value="Reboot">
+<div id="confirmBox">
+<div class="message" style="color:red;font-size:100%;font-weight: bold;text-align:center"></div>
+<span class="btn btn-danger rounded-pill px-2 yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;
+<span class="btn btn-success rounded-pill px-2 no">&nbsp;&nbsp;&nbsp;&nbsp;No&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</div>
+<button class="btn btn-success rounded-pill px-1" type="button" id="dataon">ON</button>
+<button class="btn btn-danger rounded-pill px-1" type="button" id="dataoff">OFF</button>
+</form>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarCollapse">
+  <ul class="navbar-nav me-auto mb-2 mb-md-0">
+  <li><a class="nav-link" href="net.htm">Home</a></li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pesan</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/smsinbox.html?smsinbox">Masuk <span id='smsCounts' class="smsCounts"></span></a></li>
+      <li><a class="dropdown-item" href="/smsinbox.html?smssent">Keluar</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pengaturan SIM</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/mobileconnection.html">On Off Data</a></li>
+      <li><a class="dropdown-item" href="/profilesmgr.html">Profile dan DNS</a></li>
+      <li><div class="dropdown-item" onclick="openPage('html/mobilenetworksettings.html',$(this).html())">Band</div></li>
+      <li><a class="dropdown-item" href="/ussd.html">USSD</a></li>
+      <li><a class="dropdown-item" onclick="B4A.CallSub('setBand', true)">Stabilkan Frekuensi</a></li>
+      <li><a class="dropdown-item" onclick="B4A.CallSub('clr', true)">Hapus Cookie</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pengaturan WiFi</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/wlanbasicsettings.html">Dasar</a></li>
+      <li><a class="dropdown-item" href="/wlanadvanced.html">Lanjutan</a></li>
+      <li><a class="dropdown-item" href="/wlanmacfilter.html">Filter Mac Wlan</a></li>
+      <li><a class="dropdown-item" href="/dhcp.html">DHCP</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Keamanan</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/devicemanagement.html">Perangkat Terhubung</a></li>
+      <li><a class="dropdown-item" href="/statistic.html">Statistik</a></li>
+      <li><a class="dropdown-item" href="/urlfilter.html">Filter Domain</a></li>
+      <li><a class="dropdown-item" href="/macfilter.html">Filter Mac</a></li>
+      <li><a class="dropdown-item" href="/lanipfilter.html">Filter IP</a></li>
+      <li><a class="dropdown-item" href="/virtualserver.html">Virtual Server</a></li>
+      <li><a class="dropdown-item" href="/specialapplication.html">Aplikasi Spesial</a></li>
+      <li><a class="dropdown-item" href="/dmzsettings.html">Setting DMZ</a></li>
+      <li><a class="dropdown-item" href="/bridgemode.html">Mode Bridge</a></li>
+      <li><a class="dropdown-item" href="/upnp.html">Setting UPnP</a></li>
+      <li><a class="dropdown-item" href="/nat.html">Setting NAT</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">System</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/deviceinformation.html">Informasi Modem</a></li>
+      <li><a class="dropdown-item" href="/antenna.html">Setting Antena</a></li>
+      <li><a class="dropdown-item" href="/restore.html">Reset Modem</a></li>
+      <li><a class="dropdown-item" id="Restart">Restart Modem</a></li>
+      <li><a class="dropdown-item"  id="Shutdown">Shut Down Modem</a></li>
+    </ul>
+   </li>
+   <li class="nav-item dropdown">
+   <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Tentang MWNS</a>
+    <ul class="dropdown-menu">
+     <li><a class="dropdown-item" href="about.htm">About</a></li>
+     <li><a class="dropdown-item" href="disclaimer.htm">Disclaimer</a></li>
+     <li><a class="dropdown-item" href="privacy-policy.htm">Privacy Policy</a></li>
+     <li><a class="dropdown-item" href="contact.htm">Kontak</a></li>
+     <li><a class="dropdown-item" href="donasi.htm">Donasi</a></li>
+    </ul>
+   </li>
+      
+<br>
+<div style="text-align:center;color:white;font-weight:bold">
+Setup Bekerja Pada Beberapa Router
+<table style="width: 100%;margin:auto;border: 1px solid #8f8f8f">
+<tr style="border: 1px solid #8f8f8f">
+<td class='label' style="text-align:center;border: 1px solid #8f8f8f">Antena 1</td>
+<td style="font-size:12;text-align:center;color:white" id="antenna1">Tidak dikenal</td>
+</tr>
+<tr style="border: 1px solid #8f8f8f">
+<td class='label' style="text-align:center;border: 1px solid #8f8f8f">Antena 2</td>
+<td style="font-size:12;text-align:center;color:white" id="antenna2">Tidak dikenal</td>
+</tr>
+<tr style="border: 1px solid #8f8f8f">
+<td style="text-align:center" id="antcolor" colspan="2">
+<div id="infAntena" style="font-size:14px;font-weight:bold;text-align:center;color: rgb(208, 255, 0)">Klik Tampilkan data untuk mengganti antena</div>
+<select style="display:none;text-align:center;font-weight:bold" id='antenna'>
+<option value ="0">Otomatis</option>
+<option value ="2">Dalam</option>
+<option value ="1">Luar</option>
+<option value ="3">Gabungkan</option>
+</select>
+<select style="display:none;text-align:center;font-weight:bold" id='antennao'>
+<option value ="3">Otomatis</option>
+<option value ="0">Dalam</option>
+<option value ="1">Luar</option>
+<option value ="2">Gabungkan</option>
+</select>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input type="button" class="btn" id="ReadAntenna" value="Lihat Data" style="border-radius: 10px;height:26px;width:82px">
+<input type="button" class="btn" id="SaveAntenna" value="Simpan" style="border-radius: 10px;display:none;height:26px;width:36px">
+<input type="button" class="btn" id="SaveAntennao" value="Simpan" style="border-radius: 10px;display:none;height:26px;width:36px">
+</td>
+</tr>
+</table>
+
+
+</ul>
+</div>
+</div>
+</nav>
+<div class="swipe">&nbsp;</div>
+<!-- Akhir Bagian Navbar -->
+
+<!-- Konten Master -->
+<!-- CONTENT START -->
+<center>
+<p spellcheck="false" class="texture"><b>Master Wifi Network Solution</b></p>
+</center>
+
+<span style="color:white;font-weight:bold;display:none" class="bband">Kerja Band LTE :&nbsp;<span class="colorc" id="bandB"></span></span>
+<span style="color:white;font-weight:bold;display:none" class="s5G">&nbsp;Kerja Band NR :&nbsp;<span class="colora" id="bandNR"></span></span>
+<span style="color:white;font-weight:bold;display:none" class="nop">&nbsp;Opsi Net :&nbsp;<span class="colorc" id="NetOption"></span></span>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:12px;font-weight:bold">INFORMASI PERANGKAT</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-4 themed-grid-col bg-dark" style="border:transparent">
+<span style="vertical-align: middle">
+<span style="margin-top:2px;vertical-align: middle">
+<div id="signal1" class="signal-icon" style="width:8px;height:11px"></div>
+<div id="signal2" class="signal-icon" style="width:8px;height:21px"></div>
+<div id="signal3" class="signal-icon" style="width:8px;height:31px"></div>
+<div id="signal4" class="signal-icon" style="width:8px;height:41px"></div>
+<div id="signal5" class="signal-icon" style="width:8px;height:51px"></div>
+<div><span style="text-align: center;font-size: 11px;font-weight:bold;color: teal" id="mode">2G/3G/4G</span></div>
+</span></span>
+<span class="s5G" style="vertical-align: middle">
+<span style="margin-top:2px;vertical-align: middle">
+<div id="nrsignal1" class="signal-icon" style="width:8px;height:11px"></div>
+<div id="nrsignal2" class="signal-icon" style="width:8px;height:21px"></div>
+<div id="nrsignal3" class="signal-icon" style="width:8px;height:31px"></div>
+<div id="nrsignal4" class="signal-icon" style="width:8px;height:41px"></div>
+<div id="nrsignal5" class="signal-icon" style="width:8px;height:51px"></div>
+<div><span style="text-align: center;font-size: 11px;font-weight:bold;color: teal" id="leftband">5G</span></div>
+</span></span>
+</div>
+<div class="col-4 themed-grid-col bg-dark" style="border:transparent">
+<img src="images/phot.png" width="100px height="100px">
+</div>
+<div class="col-4 themed-grid-col bg-dark" style="border:transparent">
+<center><div id="photo" style="width:70px;height:70px"></div></center>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Band :&nbsp;<span class="color2" id="allowed"></span></p>
+</div>
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Frekuensi :&nbsp;<span class="color2" id="band"></span></p>
+</div>
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Mode :&nbsp;<span class="colorb" id="moden"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Mode Net :&nbsp;<span class="colorc" id="LNetMode"></span></p>
+</div>
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Band Net :&nbsp;<span class="colorb" id="LNetworkBand"></span></p>
+</div>
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Band LTE :&nbsp;<span class="colora" id="LLTEBand"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Waktu Jalan Router :&nbsp;<span id="bootTime">00:00:00</span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Negara :&nbsp;<span id="flag"><span id="name"></span><span id="numer"></span></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Nama Model :&nbsp;<span class="Device-inf1" id="modemmodel"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">IMEI :&nbsp;<span class="Device-inf1" id="imei"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">IMEI SVN :&nbsp;<span class="Device-inf1" id="Svn"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">IMSI :&nbsp;<span class="Device-inf1" id="imsi"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Nomer Serial :&nbsp;<span class="Device-inf1" id="serial"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Nomer Saya :&nbsp;<span class="Device-inf1" id="number"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Nomer ICCID:&nbsp;<span class="Device-inf1" id="ICCID"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Versi Hardware :&nbsp<span class="Device-inf1" id="hardware"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Versi Software :&nbsp;<span class="Device-inf1" id="software"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Versi Web UI :&nbsp;<span class="Device-inf1" id="webui"></span></p>
+</div></div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Versi Config :&nbsp;<span class="Device-inf1" id="iniversion"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Subnet Mask:&nbsp;<span class="Device-inf1" id="submask"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Lan Mac1 :&nbsp;<span class="Device-inf1" id="mac1"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">LAN Mac2:&nbsp;<span class="Device-inf1" id="mac2"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Wifi Mac1 :&nbsp;<span class="Device-inf1" id="WifiMac0"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Wifi Mac2 :&nbsp;<span class="Device-inf1" id="WifiMac1"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">WAN IPv4 :&nbsp;<span class="Device-inf1" id="ipv4"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">DNS IPv4 :&nbsp;<span class="Device-inf1" id="wanipv4dns"></span></p>
+</div>
+</div>
+<!-- dns
+<td class="dropdown7" style="border: 0px"><input class="cipbtne" type="button">
+<div class="dropdown-content7"  style="border: 1px solid #8f8f8f;text-align:left;width:10%"></div>
+
+
+<table style="width:100%;height: 30px">
+<td style="font-size:15;color: rgb(255, 255, 255);background-color: rgb(19, 42, 247);text-align:center;font-weight:bold">Ubah Pengaturan DNS Anda Di WebUi Lama
+</table>
+<table style="width: 100%; background-color: rgb(186, 231, 22)">
+<td style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1)">Klik tombol khusus di WebUi Old di bawah ini</div>
+<img src="images/DNS.png" style="height: 100px;width: 250px;">
+<br>
+<table style="margin: auto;border: 0px">
+<td style="border: 0px" class="dropdown9"><input type="button" class="btn3" value="WebUi Lama" style="height:25px;width:100px;border-radius: 10px;font-weight: bold;font-size: 14px">
+
+<div class="dropdown-content9">
+<table style="width:100%;background-color: rgb(186, 231, 22)">
+<td style="font-size:13;text-align:center;font-weight:bold;color: rgb(17, 7, 165);">Ubah Pengaturan DNS Anda Di WebUi Lama</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Simpan informasi tentang mode default</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Buat status baru dan masukkan nama yang Anda inginkan</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Nama pengguna dan kata sandi tetap kosong</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Tambahkan sisa informasi ke mode default</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Aktifkan Setel Server DNS Secara Manual</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Tambahkan DNS Anda</div>
+<input type="button" class="btn3" value="Profile Management" style="height:25px;width:125px;border-radius: 10px;font-weight: bold;font-size: 14px" href="('html/profilesmgr.html',$(this).html())"></table>
+</table>
+</table>
+<tr>
+
+<table style="width:100%;height: 30px">
+<td style="font-size:15;color: rgb(255, 255, 255);background-color: rgb(19, 42, 247);text-align:center;font-weight:bold">Change Your DNS Settings In WebUi New</div>
+</table>
+<table style="width: 100%; background-color: rgb(186, 231, 22)">
+<td style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1)">Click on the special button in the WebUi New below</div>
+<img src="images/DNSUI.png" style="height: 100px;width: 250px;">
+<br>
+<table style="margin: auto;border: 0px">
+<td style="border: 0px" class="dropdown8"><input type="button" class="btn3" value="WebUi New" style="height:25px;width:100px;border-radius: 10px;font-weight: bold;font-size: 14px">
+
+<div class="dropdown-content8">
+<table style="width:100%;background-color: rgb(186, 231, 22)">
+<td style="font-size:13;text-align:center;font-weight:bold;color: rgb(17, 7, 165);">Change Your DNS Settings In WebUi New</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Enter the default mode</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Save his info</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Create a new mode and name it as you like</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Username and password keep blank</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Add the rest of the information to the default mode</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Enable Manually Set DNS Server</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">* Add your DNS</div>
+<input type="button" class="btn3" value="Profile Management" style="height:25px;width:125px;border-radius: 10px;font-weight: bold;font-size: 14px" href="('html/content.html#mobileconnection',$(this).html())">
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(17, 7, 165);">Important Note :</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">In some 5G devices, these settings are hidden due to Huawei policy</div>
+<a href="https://www.adslgate.com/dsl/showpost.php?p=1083189869&postcount=6">How to show hidden settings</a></table>
+</table>
+</table>
+</table>
+ dns -->
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">WAN IPv6 :&nbsp;<span class="Device-inf1" id="ipv6"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">DNS IPv6 :&nbsp;<span class="Device-inf1" id="wanipv6dns"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Mode Perangkat :&nbsp;<span class="Device-inf1" id="supportmode"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Produk :&nbsp;<span class="Device-inf1" id="productfam"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Menggolongkan :&nbsp;<span class="Device-inf1" id="classify"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Mode kerja :&nbsp;<span class="Device-inf1" id="wmode"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Esn :&nbsp;<span class="Device-inf1" id="Esn"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Meid :&nbsp;<span class="Device-inf1" id="Meid"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">IMS :&nbsp;<span class="Device-inf1" id="ims"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Cell Info :&nbsp;<span class="Device-inf1" id="celinf"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Lac Cell Info :&nbsp;<span class="Device-inf1" id="lacinf"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Jelajah Data :&nbsp;<span class="Device-inf1" id="roaming"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Status RRC :&nbsp;<span class="Device-inf1" id="rrc_status"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Mode Trans :&nbsp;<span class="Device-inf1" id="tm"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">TDD :&nbsp;<span class="Device-inf1" id="tdd"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Enodeb Id :&nbsp;<span class="Device-inf1" id="enoid"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-left">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Nei CellId :&nbsp;<span class="Device-inf1" id="nei_cellid"></span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Frekuensi :&nbsp;<span class="Device-inf1" id="dlulfrequency"></span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">CQI :&nbsp;<span class="Device-inf1" id="0cqi">0</span><span class="Device-inf1" id="1cqi">0</span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">QAM :&nbsp;<span class="Device-inf1" id="QAM0">0</span><span class="Device-inf1" id="QAM1">0</span></p>
+</div>
+</div>
+
+<!--
+<span class="dropdown11"><input type="button" value="⌨️" style="height:17px;background-color: rgb(30, 114, 129);width:25px;font-weight: bold">
+<span class="dropdown-content11">
+<h1 style="font-weight: bold; font-size:18;color: rgb(0, 0, 0);">Daftar Kode Frekuensi Secara Manual</h1>
+<input type="text" id="calc" class="calco" onclick="copyText()">
+<script>
+function copyText() {
+var copyText = document.getElementById("calc");
+copyText.select();
+document.execCommand("copy");
+msg("Disalin, Buka Stabilisasi Frekuensi");
+}
+$(document).ready(function()
+{
+$('#calc').attr("placeholder", "Klik Di Sini Untuk Menyalin Kode 📋");
+});
+</script>
+<br> <br>
+<table style="width:100%;height: 10px;font-size:16">
+<td style="background-color: rgb(10, 129, 133);">FDD
+</table>
+
+<input type="button" class="btn3 calco" value="B1-2100" onclick="dis('1')">
+<input type="button" class="btn3 calco" value="B2-1900" onclick="dis('2')">
+<input type="button" class="btn3 calco" value="B3-1800" onclick="dis('4')">
+<input type="button" class="btn3 calco" value="B4-1700" onclick="dis('8')">
+<input type="button" class="btn3 calco" value="B5-850" onclick="dis('10')">
+<input type="button" class="btn3 calco" value="B7-2600" onclick="dis('40')">
+<input type="button" class="btn3 calco" value="B8-900" onclick="dis('80')">
+<input type="button" class="btn3 calco" value="B11-1500" onclick="dis('400')">
+<input type="button" class="btn3 calco" value="B12-700" onclick="dis('800')">
+<input type="button" class="btn3 calco" value="B13-700" onclick="dis('1000')">
+<input type="button" class="btn3 calco" value="B14-700" onclick="dis('2000')">
+<input type="button" class="btn3 calco" value="B17-700" onclick="dis('10000')">
+<input type="button" class="btn3 calco" value="B18-850" onclick="dis('20000')">
+<input type="button" class="btn3 calco" value="B19-850" onclick="dis('40000')">
+<input type="button" class="btn3 calco" value="B20-800" onclick="dis('80000')">
+<input type="button" class="btn3 calco" value="B21-1500" onclick="dis('100000')">
+<input type="button" class="btn3 calco" value="B24-1600" onclick="dis('800000')">
+<input type="button" class="btn3 calco" value="B25-1900" onclick="dis('1000000')">
+<input type="button" class="btn3 calco" value="B26-850" onclick="dis('2000000')">
+<input type="button" class="btn3 calco" value="B28-700" onclick="dis('8000000')">
+<input type="button" class="btn3 calco" value="B29-700" onclick="dis('10000000')">
+<input type="button" class="btn3 calco" value="B30-2300" onclick="dis('20000000')">
+<input type="button" class="btn3 calco" value="B31-450" onclick="dis('40000000')">
+<input type="button" class="btn3 calco" value="B32-1500" onclick="dis('80000000')">
+<br> <br>
+<tr>
+<table style="width:100%;height: 10px;font-size:16">
+<td style="background-color: rgb(10, 129, 133);">TDD
+</table>
+<input type="button" class="btn3 calco" value="B34-2000" onclick="dis('200000000')">
+<input type="button" class="btn3 calco" value="B37-1900" onclick="dis('1000000000')">
+<input type="button" class="btn3 calco" value="B38-2600" onclick="dis('2000000000')">
+<input type="button" class="btn3 calco" value="B39-1900" onclick="dis('4000000000')">
+<input type="button" class="btn3 calco" value="B40-2300" onclick="dis('8000000000')">
+<input type="button" class="btn3 calco" value="B41-2500" onclick="dis('10000000000')">
+<input type="button" class="btn3 calco" value="B42-3500" onclick="dis('20000000000')">
+<input type="button" class="btn3 calco" value="B43-3700" onclick="dis('40000000000')">
+<input type="button" class="btn3 calco" value="B44-700" onclick="dis('80000000000')">
+<input type="button" class="btn3 calco" value="B46-5200" onclick="dis('200000000000')">
+<input type="button" class="btn3 calco" value="B47-5900" onclick="dis('400000000000')">
+<input type="button" class="btn3 calco" value="B48-3500" onclick="dis('800000000000')">
+<input type="button" class="btn3 calco" value="B49-3500" onclick="dis('1000000000000')">
+<input type="button" class="btn3 calco" value="B50-1500" onclick="dis('2000000000000')">
+<input type="button" class="btn3 calco" value="B51-1500" onclick="dis('4000000000000')">
+<input type="button" class="btn3 calco" value="B52-3300" onclick="dis('8000000000000')">
+<input type="button" class="btn3 calco" value="B53-2500" onclick="dis('10000000000000')">
+<br> <br>
+
+<label class="dropdown12">ℹ️
+<label class="dropdown-content12">
+<table style="width:100%;height: 30px;font-size:16">
+<td style="font-size:13;background-color: rgb(19, 42, 247);text-align:center;font-weight:bold">Penjelasan Singkat Untuk Daftar Ini
+</table>
+<table style="width:100%;background-color: rgb(186, 231, 22)">
+<td style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">Daftar ini berisi kode untuk semua frekuensi bagi mereka yang ingin menggabungkan frekuensi satu sama lain secara manual dan tidak secara otomatis
+<div>----------------------------------</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">Cara kerjanya dalam hal menggabungkan lebih dari satu frekuensi</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Pilih frekuensi yang Anda inginkan dan gabungkan dengan frekuensi lain dan seterusnya setelah itu salin kode dan pergi ke menu samping di bagian atas dan pilih perintah untuk menginstal frekuensi lalu tempelkan kode di tempat yang ditentukan pada gambar berikut</div>
+<img src="images/PSX.jpg" style="height: 100px;width: 200px;">
+</table>
+</label>
+</label>
+&nbsp;
+&nbsp;
+<input type="button" class="btn3" style="width: 40px; height: 25px; background-color: rgb(175, 11, 11)"value="Clear" onclick="clrr()">
+&nbsp;
+<input type="button" class="btn3 calco" style="width: 40px; height: 25px; background-color: rgb(245, 90, 90)" value="X" onclick="back()">
+&nbsp;
+<input type="button" class="btn3 calco" style="width: 40px; height: 25px" value="+" onclick="dis('+')">
+&nbsp;
+<input type="button" class="btn3 calco" style="width: 55px; height: 25px; background-color: rgb(145, 180, 18)" value="=" onclick="solve()">
+</div>
+-->
+
+<!-- bekas letak tombol on off home restart -->
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:12px;font-weight:bold">INFORMASI MODEM</p>
+</div>
+</div>
+
+
+<div class="row mb-0 text-center">
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Status</p>
+</div>
+
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Type Modem</p>
+</div>
+
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Layanan</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px" id="conn">Tidak Konek</p>
+</div>
+
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px" id="devicename">Tidak dikenal</p>
+</div>
+
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px" id="brand">Tidak dikenal</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">PCI :&nbsp;<span id="pci">0</span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Cell ID :&nbsp;<span id="ceid">0</span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">TAC :&nbsp;<span id="lac">0</span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">eNBID :&nbsp;<span id="enbi">0</span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:12px;font-weight:bold">WAKTU AKTIF MODEM</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Aktif :&nbsp;<span id="time" style="font-size:10px">00:00:00</span></p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Total Aktif :&nbsp;<span id="TotalConnectTime" style="font-size:10px">0 Hari 00:00:00</span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:12px;font-weight:bold">PEMAKAIAN BANDWIDTH HARI INI</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Down :&nbsp;<span id="CurrentDownload" style="font-size:10px">0K/s</span></p>
+</div>
+
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Up :&nbsp;<span id="CurrentUpload" style="font-size:10px">0K/s</span></p>
+</div>
+
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">BW :&nbsp;<span id="Tupdown" style="font-size:10px">0K/s</span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:16px;font-weight:bold">TOTAL SEMUA PEMAKAIAN BANDWIDTH</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Down :&nbsp;<span id="down" style="font-size:10px">0GB</span></p>
+</div>
+
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">Up :&nbsp;<span id="up" style="font-size:10px">0GB</span></p>
+</div>
+
+<div class="col-4 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">BW :&nbsp;<span id="Tlupdown" style="font-size:10px">0GB</span></p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:12px;font-weight:bold">KECEPATAN INTERNET 2G 3G 4G</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">S-Down :&nbsp;<span id="CurrentDownloadRate" style="font-size:10px;color:black">0K/s</span>&nbsp;(<span id="CurrentDownloadRates" style="font-size:10px">0B/s</span>)</p>
+</div>
+
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px">S-Up :&nbsp;<span id="CurrentUploadRate" style="font-size:10px;color:black">0K/s</span>&nbsp;(<span id="CurrentUploadRates" style="font-size:10px">0B/s</span>)</p>
+</div>
+</div>
+
+<!-- CONTENT END -->
+
+<!-- SIGNALDETAILS START -->
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:16px;font-weight:bold">INFORMASI SIGNAL 2G 3G 4G</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-primary" style="height:40px">
+<p class="lead" style="font-size:12px;font-weight:bold">Mode</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-primary" style="height:40px">
+<p class="lead" style="font-size:12px;font-weight:bold">Pointing signal</p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px">
+<p class="rssier" style="font-size:12px">RSSI</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px">
+<p class="LabelSignal fixreading" id="rssireading"><span class="perr"><span class="fixid" id="rssi">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="rssicolor"></span><span class="fixid" id="rssipercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px">
+<p class="rfmargin" style="font-size:12px">Margin</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px">
+<p class="LabelSignal fixreading" id="rfreading"><span class="perr"><span class="fixid" id="marginrf">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="rfcolor"></span><span class="fixid" id="rfpercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="rfRBBecio" style="font-size:12px">PRB 3G</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none"> 
+<p class="LabelSignal fixreading" id="RBBecioreading"><span class="perr"><span class="fixid" id="RBBecio">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="RBBeciocolor"></span><span class="fixid" id="RBBecioIndicator"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="rxlev2g" style="font-size:12px">Rxlev 2G</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="rxlevreading"><span class="perr"><span class="fixid" id="rxlev">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="rxlevcolor"></span><span class="fixid" id="rxlevpercent"></span></span></p>
+</div>
+</div>
+<!-------------------------3G-------------------------->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="sig3g" style="font-size:12px">RSCP 3G</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="rscpreading"><span class="perr"><span class="fixid" id="rscp">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="rscpcolor"></span><span class="fixid" id="rscppercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="sig3g" style="font-size:12px">ECIO 3G</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="ecioreading"><span class="perr"><span class="fixid" id="ecio">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="eciocolor"></span><span class="fixid" id="eciopercent"></span></span></p>
+</div>
+</div>
+<!-------------------------4G-------------------------->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px">
+<p class="sig4g" style="font-size:12px">RSRP</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px">
+<p class="LabelSignal fixreading" id="rsrpreading"><span class="perr"><span class="fixid" id="rsrp">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="rsrpcolor"></span><span class="fixid" id="rsrppercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px">
+<p class="sig4g" style="font-size:12px">RSRQ</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px">
+<p class="LabelSignal fixreading" id="rsrqreading"><span class="perr"><span class="fixid" id="rsrq">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="rsrqcolor"></span><span class="fixid" id="rsrqpercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px">
+<p class="sig4g" style="font-size:12px">SINR</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px">
+<p class="LabelSignal fixreading" id="sinrreading"><span class="perr"><span class="fixid" id="sinr">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="sinrcolor"></span><span class="fixid" id="sinrpercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="tx" style="font-size:12px">TX POWER</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="fixreading" id="txcolor"><span class="fixid" id="tx">NONE</span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="earf4g" style="font-size:12px">EARFCN</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="fixreading" id="arfcnreading"><span class="fixid" id="arfcn">NONE</span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="mcstbs4g" style="font-size:12px">MCS</p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="dlmcs0reading"><span class="fixid" id="dlmcs0">0</span></p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="dlmcs1reading"><span class="fixid" id="dlmcs1">0</span></p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="ulmcsreading"><span class="fixid" id="ulmcs">0</span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="mcstbs4g" style="font-size:12px">TBS</p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="dltbs0reading"><span class="fixid" id="dltbs0">0</span></p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="dltbs1reading"><span class="fixid" id="dltbs1">0</span></p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="ultbsreading" ><span class="fixid" id="ultbs">0</span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="4ulf" style="font-size:12px">Frekuensi</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading"><span class="fixid" id="ludfreq">0</span></p>
+</div>
+</div>
+<!---->
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="dlbw4g" style="font-size:12px">Bandwidth</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="dlulbandreading"><span class="fixid" id="dlulbandwidth">0</span></p>
+</div>
+</div>
+<!-------------------------5G-------------------------->
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px;display:none">
+<p class="lead" style="font-size:16px;font-weight:bold">INFORMASI SIGNAL 5G</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-primary" style="height:40px;display:none">
+<p class="lead" style="font-size:12px;font-weight:bold">5G</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-primary" style="height:40px;display:none">
+<p class="lead" style="font-size:12px;font-weight:bold">Pointing signal</p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="sig5g" style="font-size:12px;font-weight:bold">RSRP</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nrrsrpreading"><span class="perr"><span class="fixid" id="nrrsrp">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="nrrsrpcolor"></span><span class="fixid" id="nrrsrppercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="sig5g" style="font-size:12px;font-weight:bold">RSRQ</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nrrsrqreading"><span class="perr"><span class="fixid" id="nrrsrq">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="nrrsrqcolor"></span><span class="fixid" id="nrrsrqpercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="sig5g" style="font-size:12px;font-weight:bold">SINR</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nrsinrreading"><span class="perr"><span class="fixid" id="nrsinr">NONE</span>&nbsp;&nbsp;<span class="fixreading" id="nrsinrcolor"></span><span class="fixid" id="nrsinrpercent"></span></span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="nrtx" style="font-size:12px;font-weight:bold">TX POWER</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nrtxcolor"><span class="fixid" id="nrtx">0</span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="earf5g" style="font-size:12px;font-weight:bold">EARFCN</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nrarfcnreading"><span class="fixid" id="nrerfcn">0</span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="dlmcs5g" style="font-size:12px">MCS</p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nr0dlmcsreading"><span class="fixid" id="nr0dlmcs">0</span></p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nr1dlmcsreading"><span class="fixid" id="nr0dlmcs">0</span></p>
+</div>
+
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nrulmcsreading"><span class="fixid" id="nrulmcs">0</span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="dlfreq5g" style="font-size:12px;font-weight:bold">FREKUENSI</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading"><span class="fixid" id="nrdlulfreq">0</span></p>
+</div>
+</div>
+<!---->
+<div class="row mb-0 text-center">
+<div class="col-3 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="dlbw5g" style="font-size:12px;font-weight:bold">BANDWIDTH</p>
+</div>
+
+<div class="col-9 themed-grid-col bg-dark" style="height:40px;display:none">
+<p class="LabelSignal fixreading" id="nrdlulbandreading"><span class="fixid" id="nrdlulbandwidth">0</span></p>
+</div>
+</div>
+<!-- SIGNALDETAILS END -->
+
+<!-- tombol 2g 3g 4g 5g -->
+<fieldset class="callseting" style="border-color:orange">
+<legend class="colorb" style="font-size:14"><b><b>Pengaturan Koneksi</b></b></legend>
+<div style="text-align:center">
+<div class="dropdown2" id="speedrun"><input type="button" class="btn2" value="Speed Test" style="height:26px;width:72px;font-weight: bold">
+<div class="dropdown-content2">
+<table style="width: 100%;height:270px;border: 1px;font-size:smaller">
+<td style="border:1px">
+<div style="text-align:center;font-size: 15px;font-weight: bold;color:white">Speed Test</div>
+<div id="Speed" style="height:250px;width:250px"></div>
+</td>
+<tr>
+<td class="center" style="border:0px">
+<label class="btn3" onClick="update_iframe()" style="padding: 6px 5px 0px 5px;border-radius: 10px;height:25px;width:85px;font-weight: bold;font-size: 14px">Tes Lagi</label>
+</tr>
+</table>
+</div>
+</div>
+
+<label class="sAuto">
+<input type="button" onclick="doSomea()" class="btn2" id="btnAuto" value="Otomatis" style="height:25px;width:60px;font-weight: bold">
+<script>
+function doSomea(){
+document.getElementById("btnAuto").disabled = true;
+}
+</script>
+</label>
+<label class="s5G">
+<input type="button" onclick="doSomeb()" class="btn2" id="btn5G" value="5G" style="height:23px;width:26px;font-weight: bold">
+<script>
+function doSomeb(){
+document.getElementById("btn5G").disabled = true;
+}
+</script>
+</label>
+<label class="s4G">
+<input type="button" onclick="doSomec()" class="btn2" id="btnLTE" value="4G" style="height:23px;width:26px;font-weight: bold">
+<script>
+function doSomec(){
+document.getElementById("btnLTE").disabled = true;
+}
+</script>
+</label>
+<label class="s3G">
+<input type="button" onclick="doSomed()" class="btn2" id="btn3G" value="3G" style="height:23px;width:26px;font-weight: bold">
+<script>
+function doSomed(){
+document.getElementById("btn3G").disabled = true;
+}
+</script>
+</label>
+<label class="s2G">
+<input type="button" onclick="doSomee()" class="btn2" id="btn2G" value="2G" style="height:23px;width:26px;font-weight: bold">
+<script>
+function doSomee(){
+document.getElementById("btn2G").disabled = true;
+}
+</script>
+</label>
+<input type="button" onclick="doSomef()" class="btn2" id="accept" value="Selesai" style="height:26px;width:50px;font-weight: bold">
+<script>
+function doSomef(){
+document.getElementById("accept").disabled = true;
+}
+</script>
+
+<div class="dropdown4"><input type="button" class="btn2" value="⚙️" style="height:23px;width:30px;font-weight: bold">
+<!-- FREQUENCY START -->
+<div class="dropdown-content4">
+<div style="font-size:16;text-align:center;font-weight:bold;color: rgb(255, 0, 0)">Frequency Stabilization List</div>
+<!-- 3G -->
+<fieldset style="width: auto">
+<legend class="colorb" style="font-size:14"><b><b>Frekuensi 3G</b></b></legend>
+<div style="text-align: center;font-size:big;color: #72aa2c">
+<label>
+<input type="radio" name="4" class="d-radio" id="WB06"><span class="eya1 w06">&nbsp;800-B6&nbsp;</label>
+<label>
+<input type="radio" name="4" class="d-radio" id="WB019"><span class="eya1 w019">&nbsp;800-B19&nbsp;</label>
+<label>
+<input type="radio" name="4" class="d-radio" id="WB05"><span class="eya1 w05">&nbsp;850-B5&nbsp;</label>
+<label>
+<input type="radio" name="4" class="d-radio" id="WB08"><span class="eya1 w08">&nbsp;900-B8&nbsp;</label>
+<label>
+<input type="radio" name="4" class="d-radio" id="WB04"><span class="eya1 w04">&nbsp;1700-B4&nbsp;</label>
+<label>
+<input type="radio" name="4" class="d-radio" id="WB09"><span class="eya1 w09">&nbsp;1700-B9&nbsp;</label>
+<label>
+<input type="radio" name="4" class="d-radio" id="WB02"><span class="eya1 w02">&nbsp;1900-B2&nbsp;</label>
+<label>
+<input type="radio" name="4" class="d-radio" id="WB01"><span class="eya1 w01">&nbsp;2100-B1&nbsp;</label>
+</div>
+</fieldset>
+
+<!-- 4G -->
+<fieldset style="width: auto">
+<legend class="colorb" style="font-size:14"><b><b>Frekuensi 4G</b></b></legend>
+<table style="width: 100%;border: 0px;text-align:center">
+<fieldset>
+<legend style="font-size:big;color: green"><b><b>FDD</b></b></legend>
+<div style="text-align: center;font-size:big;color: orange">
+<label>
+<input type="checkbox" id="B012"><span class="eya1 012">&nbsp;700-B12&nbsp;</label>
+<label>
+<input type="checkbox" id="B013"><span class="eya1 013">&nbsp;700-B13&nbsp;</label>
+<label>
+<input type="checkbox" id="B017"><span class="eya1 017">&nbsp;700-B17&nbsp;</label>
+<label>
+<input type="checkbox" id="B028"><span class="eya1 028">&nbsp;700-B28&nbsp;</label>
+<label>
+<input type="checkbox" id="B029"><span class="eya1 029">&nbsp;700-B29&nbsp;</label>
+<label>
+<input type="checkbox" id="B020"><span class="eya1 020">&nbsp;800-B20&nbsp;</label>
+<label>
+<input type="checkbox" id="B027"><span class="eya1 027">&nbsp;800-B27&nbsp;</label>
+<label>
+<input type="checkbox" id="B05"><span class="eya1 05">&nbsp;850-B5&nbsp;</label>
+<label>
+<input type="checkbox" id="B018"><span class="eya1 018">&nbsp;850-B18&nbsp;</label>
+<label>
+<input type="checkbox" id="B019"><span class="eya1 019">&nbsp;850-B19&nbsp;</label>
+<label>
+<input type="checkbox" id="B026"><span class="eya1 026">&nbsp;850-B26&nbsp;</label>
+<label>
+<input type="checkbox" id="B08"><span class="eya1 08">&nbsp;900-B8&nbsp;</label>
+<label>
+<input type="checkbox" id="B032"><span class="eya1 032">&nbsp;1500-B32&nbsp;</label>
+<label>
+<input type="checkbox" id="B04"><span class="eya1 04">&nbsp;1700-B4&nbsp;</label>
+<label>
+<input type="checkbox" id="B03"><span class="eya1 03">&nbsp;1800-B3&nbsp;</label>
+<label>
+<input type="checkbox" id="B02"><span class="eya1 02">&nbsp;1900-B2&nbsp;</label>
+<label>
+<input type="checkbox" id="B025"><span class="eya1 025">&nbsp;1900-B25&nbsp;</label>
+<label>
+<input type="checkbox" id="B01"><span class="eya1 01">&nbsp;2100-B1&nbsp;</label>
+<label>
+<input type="checkbox" id="B030"><span class="eya1 030">&nbsp;2300-B30&nbsp;</label>
+<label>
+<input type="checkbox" id="B07"><span class="eya1 07">&nbsp;2600-B7&nbsp;</label>
+</div>
+</fieldset>
+<fieldset>
+<legend style="font-size:big;color: orange"><b><b>TDD</b></b></legend>
+<div style="text-align: center;font-size:big;color: orange">
+<label>
+<input type="checkbox" id="B039"><span class="eya1 039">&nbsp;1900-B39&nbsp;</label>
+<label>
+<input type="checkbox" id="B034"><span class="eya1 034">&nbsp;2000-B34&nbsp;</label>
+<label>
+<input type="checkbox" id="B040"><span class="eya1 040">&nbsp;2300-B40&nbsp;</label>
+<label>
+<input type="checkbox" id="B041"><span class="eya1 041">&nbsp;2500-B41&nbsp;</label>
+<label>
+<input type="checkbox" id="B038"><span class="eya1 038">&nbsp;2600-B38&nbsp;</label>
+<label>
+<input type="checkbox" id="B042"><span class="eya1 042">&nbsp;3500-B42&nbsp;</label>
+<label>
+<input type="checkbox" id="B043"><span class="eya1 043">&nbsp;3700-B43&nbsp;</label>
+</div>
+</table>
+</fieldset>
+
+<!-- 5G -->
+<fieldset style="width: auto;display:none">
+<legend class="colorb" style="font-size:14;display:none"><b><b>Frekuensi 5G</b></b></legend>
+<div style="text-align: center;font-size:big;color: #72aa2c;display:none">
+<label style="display:none">
+<input type="radio" id="btnNSAa" name="1" class="d-radio"><span class="eya1 nsacol">&nbsp;NSA&nbsp;</label>
+<label style="display:none">
+<input type="radio" id="btnSAa" name="1" class="d-radio"><span class="eya1 sacol">&nbsp;SA&nbsp;</label>
+<label style="display:none">
+<input type="radio" id="btnSANSAa" name="1" class="d-radio"><span class="eya1 sansacol">&nbsp;SA+NSA&nbsp;</label>
+<input type="checkbox" id="btnNRa">&nbsp;4G + 5G&nbsp;</label>
+
+<label class="dropdown6">&nbsp;ℹ️
+<label class="dropdown-content6">
+<table style="width:100%;height: 30px;font-size:16;display:none">
+<td style="background-color: rgb(19, 42, 247);text-align:center;font-weight:bold">Penjelasan Singkat Mode 5G
+</table>
+<table style="width:100%;background-color: rgb(186, 231, 22)">
+<td style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">NSA
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Ini adalah 5G yang tidak independen dan bergantung pada jaringan 4G untuk mengangkat dan berfungsi di semua wilayah</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">SA</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Ini adalah 5G yang sepenuhnya independen, artinya berfungsi untuk mengunduh dan mengunggah file pada saat yang sama, tetapi tidak berfungsi di beberapa area</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">SA+NSA</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Ini menggabungkan dua mode satu sama lain, yang merupakan favorit saya</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">4G + 5G</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Jika opsi ini dipilih, 4G bekerja dengan 5G secara bersamaan, dan jika tidak dipilih, 4G bekerja sendiri</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">Catatan penting :</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Sekarang dimungkinkan untuk menginstal mode 5G sendiri tanpa 4G yang bekerja dengannya, tetapi itu tidak akan berfungsi dengan baik karena tidak tersedia di semua wilayah</div>
+<div style="font-size:12;text-align:center;font-weight:bold;color: rgb(95, 7, 61);">Cara mengaktifkannya dengan tidak mengaktifkan frekuensi 4G dengan opsi 4G + 5G</div>
+</table>
+</div>
+</fieldset>
+<!-- FREQUENCY END -->
+<table style="border: 0px; margin: 5px 5px 5px 5px; text-align:center;font-weight:bold">
+<td style="width:100%; background-color: rgb(83, 119, 117);border-radius: 10px;border: 0px;" id="conne">Tidak terhubung</td>
+<th><th><th><th><th><th><th>
+<th><th><th><th><th><th><th>
+<th><th><th><th><th><th><th>
+<td class="dropdown5" style="border: 0px">ℹ️
+<div class="dropdown-content5">
+<table style="width:100%;font-size:15">
+<td style="width:100%;height: 30px;background-color: rgb(19, 42, 247);text-align:center;font-weight:bold">Penjelasan Khusus Dalam Daftar Ini</td>
+<table style="background-color: rgb(186, 231, 22)">
+<td style="font-size:14;text-align:center;color: rgb(92, 51, 5);font-weight:bold">Daftar ini khusus untuk perangkat yang tidak mendukung pembacaan frekuensi otomatis, karena modifikasi pemrograman router dan kegagalan mendapatkan jalur yang benar untuk perintah</div>
+<div style="width:100%;font-size:14;text-align:center;font-weight:bold;color: rgb(17, 7, 165);">Catatan penting :</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Anda harus mengetahui frekuensi khusus di router sebelum memasang frekuensi</div>
+</table>
+<td style="border: 0">
+<input type="button" class="btn4" onclick="doSomething1()" value="Selesai" id="accept1" style="margin: 0px 0px 0px 40px;height:30px;width:75px;border-radius: 10px;font-weight: bold;font-size: 12px">
+<script>
+function doSomething1(){
+document.getElementById("accept1").disabled = true;
+}
+</script>
+</table>
+</div>
+</div>
+<input type="button" onclick="doSomef()" class="cipbtnc" id="refreship" style="margin: 3px 0px 0px 8px;">
+<script>
+function doSomef(){
+document.getElementById("refreship").disabled = true;
+}
+</script>
+</fieldset>
+<!-- CONTROL END -->
+
+<!-- FREQUENCY START -->
+
+<!-- 3G -->
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:14px;font-weight:bold">BAND 3G</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-dark" style="height:40px">
+<p class="lead" style="font-size:10px;font-weight:bold">
+<label class="sWB6" style="display:none">
+<input type="radio" name="3" class="b-radio" id="WB6"><span class="eya w06">&nbsp;800 - B6&nbsp;</span></label>
+<label class="sWB19" style="display:none">
+<input type="radio" name="3" class="b-radio" id="WB19"><span class="eya w019">&nbsp;800 - B19&nbsp;</span></label>
+<label class="sWB5" style="display:none">
+<input type="radio" name="3" class="b-radio" id="WB5"><span class="eya w05">&nbsp;850 - B5&nbsp;</span></label>
+<label class="sWB8">
+<input type="radio" name="3" class="b-radio" id="WB8"><span class="eya w08">&nbsp;900 - B8&nbsp;</span></label>
+<label class="sWB4" style="display:none">
+<input type="radio" name="3" class="b-radio" id="WB4"><span class="eya w04">&nbsp;1700 - B4&nbsp;</span></label>
+<label class="sWB9" style="display:none">
+<input type="radio" name="3" class="b-radio" id="WB9"><span class="eya w09">&nbsp;1700 - B9&nbsp;</span></label>
+<label class="sWB2" style="display:none">
+<input type="radio" name="3" class="b-radio" id="WB2"><span class="eya w02">&nbsp;1900 - B2&nbsp;</span></label>
+<label class="sWB1">
+<input type="radio" name="3" class="b-radio" id="WB1"><span class="eya w01">&nbsp;2100 - B1&nbsp;</span></label>
+</p></div></div>
+<!-- 4G -->
+<div id="s4G" class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px">
+<p class="lead" style="font-size:14px;font-weight:bold">BAND 4G</p>
+</div>
+</div>
+
+<div id="s4G" class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<p class="lead" style="font-size:14px;font-weight:bold">FDD</p>
+</div>
+<div class="col-6 themed-grid-col bg-danger" style="height:40px">
+<p class="lead" style="font-size:14px;font-weight:bold">TDD</p>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B12"><span class="eya 012">&nbsp;700 - B12&nbsp;</span>
+</div>
+<div class="col-6 themed-grid-col bg-danger" style="height:40px">
+<input type="checkbox" id="B39"><span class="eya 039">&nbsp;1900 - B39&nbsp;</span></label>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B13"><span class="eya 013">&nbsp;700 - B13&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-danger" style="height:40px">
+<input type="checkbox" id="B34"><span class="eya 034">&nbsp;2000 - B34&nbsp;</span></label>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B17"><span class="eya 017">&nbsp;700 - B17&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-danger" style="height:40px">
+<input type="checkbox" id="B40"><span class="eya 040">&nbsp;2300 - B40&nbsp;</span></label>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B28"><span class="eya 028">&nbsp;700 - B28&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-danger" style="height:40px">
+<input type="checkbox" id="B41"><span class="eya 041">&nbsp;2500 - B41&nbsp;</span></label>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B29"><span class="eya 029">&nbsp;700 - B29&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-danger" style="height:40px">
+<input type="checkbox" id="B38"><span class="eya 038">&nbsp;2600 - B38&nbsp;</span></label>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B20"><span class="eya 020">&nbsp;800 - B20&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-danger" style="height:40px">
+<input type="checkbox" id="B42"><span class="eya 042">&nbsp;3500 - B42&nbsp;</span></label>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B27"><span class="eya 027">&nbsp;800 - B27&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-danger" style="height:40px">
+<input type="checkbox" id="B43"><span class="eya 043">&nbsp;3700 - B43&nbsp;</span></label>
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B5"><span class="eya 05">&nbsp;850 - B5&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B18"><span class="eya 018">&nbsp;850 - B18&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B19"><span class="eya 019">&nbsp;850 - B19&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B26"><span class="eya 026">&nbsp;850 - B26&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B8"><span class="eya 08">&nbsp;900 - B8&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B32"><span class="eya 032">&nbsp;1500 - B32&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B4"><span class="eya 04">&nbsp;1700 - B4&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B3"><span class="eya 03">&nbsp;1800 - B3&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B2"><span class="eya 02">&nbsp;1900 - B2&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B25"><span class="eya 025">&nbsp;1900 - B25&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B1"><span class="eya 01">&nbsp;2100 - B1&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B30"><span class="eya 030">&nbsp;2300 - B30&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+
+<div class="row mb-0 text-center">
+<div class="col-6 themed-grid-col bg-warning" style="height:40px">
+<input type="checkbox" id="B7"><span class="eya 07">&nbsp;2600 - B7&nbsp;</span></label>
+</div>
+<div class="col-6 themed-grid-col bg-dark" style="height:40px">
+</div>
+</div>
+<!-- 5G -->
+<div class="row mb-0 text-center">
+<div class="col-12 themed-grid-col bg-success" style="height:40px;display:none">
+<p class="lead" style="font-size:14px;font-weight:bold;display:none">BAND 5G</p>
+</div>
+</div>
+<div style="text-align: center;font-size:big;color: #72aa2c;display:none">
+<label>
+<input type="radio" id="btnNSA" name="2" class="b-radio"><span class="eya nsacol">&nbsp;NSA&nbsp;</label>
+<label>
+<input type="radio" id="btnSA" name="2" class="b-radio"><span class="eya sacol">&nbsp;SA&nbsp;</label>
+<label>
+<input type="radio" id="btnSANSA" name="2" class="b-radio"><span class="eya sansacol">&nbsp;SA+NSA&nbsp;</label>
+<label style="color: #C8B560;font-weight: bold;display:none">
+<input type="checkbox" id="btnNR">&nbsp;4G + 5G&nbsp;</label>
+
+<label class="dropdown10">&nbsp;&nbsp;ℹ️
+<label class="dropdown-content10">
+<table style="width:100%;height: 30px;font-size:16">
+<td style="background-color: rgb(19, 42, 247);text-align:center;font-weight:bold">Penjelasan Singkat Mode 5G
+</table>
+<table style="width:100%;background-color: rgb(186, 231, 22)">
+<td style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">NSA
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Ini adalah 5G yang tidak independen dan bergantung pada jaringan 4G untuk mengangkat dan berfungsi di semua wilayah</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">SA</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Ini adalah 5G yang sepenuhnya independen, artinya berfungsi untuk mengunduh dan mengunggah file pada saat yang sama, tetapi tidak berfungsi di beberapa area</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">SA+NSA</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Ini menggabungkan dua mode satu sama lain, yang merupakan favorit saya</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">4G + 5G</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Jika opsi ini dipilih, 4G bekerja dengan 5G secara bersamaan, dan jika tidak dipilih, 4G bekerja sendiri</div>
+<div style="font-size:14;text-align:center;font-weight:bold;color: rgb(39, 6, 185);">Catatan penting :</div>
+<div style="font-size:13;text-align:center;font-weight:bold;color: rgb(207, 1, 1);">Sekarang dimungkinkan untuk menginstal mode 5G sendiri tanpa 4G yang bekerja dengannya, tetapi itu tidak akan berfungsi dengan baik karena tidak tersedia di semua wilayah</div>
+<div style="font-size:12;text-align:center;font-weight:bold;color: rgb(95, 7, 61);">Cara mengaktifkannya dengan tidak mengaktifkan frekuensi 4G dengan opsi 4G + 5G</div>
+</table>
+</div>
+</fieldset>
+<!-- FREQUENCY END -->
+<!-- FREQUENCY END -->
+
+<!-- Informasi -->
+<div class="infA" style="display:none;font-size:14px;font-weight:bold;text-align:center;color: rgb(255, 0, 0)"><br><br>Kata Sandi Atau Nama Pengguna Salah<br><br><span style="font-size:14px;font-weight:bold;text-align:center;color: rgb(51, 180, 12)">Masukkan Nama Pengguna Dan Kata Sandi Yang Benar Sebelum Melanjutkan<br><br><span style="font-size:14px;font-weight:bold;text-align:center;color: rgb(180, 121, 12)" onclick="showLoginn()">Tekan Enter Di Sini<br><br><span style="font-size:14px;font-weight:bold;text-align:center;color: rgb(29, 197, 183)">⇧&emsp;Atau Klik Tombol Halaman Login Dari Atas</div>
+<div class="infB" style="display:none;font-size:14px;font-weight:bold;text-align:center;color: rgb(51, 180, 12)"><br>Program Ini Hanya Melayani Pemilik Perangkat Huawei<br><br><span style="font-size:14px;font-weight:bold;text-align:center;color: rgb(180, 121, 12)">Program Tidak Bekerja Dengan Baik Pada Perangkat 5G Dengan Pembaruan Baru Karena Kebijakan Huawei<br><br></div>
+<div class="infC" style="display:none;font-size:14px;font-weight:bold;text-align:center;color: rgb(255, 0, 0)"><br><br>Coba Lagi Dalam 2 Menit<br><br><span style="font-size:14px;font-weight:bold;text-align:center;color: rgb(51, 180, 12)">Masukkan Nama Pengguna Dan Kata Sandi Yang Benar Sebelum Melanjutkan<br><br><span style="font-size:14px;font-weight:bold;text-align:center;color: rgb(180, 121, 12)" onclick="showLoginn()">Tekan Enter Di Sini<br><br><span style="font-size:14px;font-weight:bold;text-align:center;color: rgb(29, 197, 183)">⇧&emsp;Atau Klik Tombol Halaman Login Dari Atas</div>
+<div class="infD" style="display:none;font-size:14px;font-weight:bold;text-align:center;color: rgb(255, 0, 0)"><br><br>Ada Pengguna Lain Di Dalam, Coba Lagi Nanti<br><br></div>
+<!-- Tutup Informasi -->
+
+</main>
+<!-- Akhir Konten Master -->
+
+<!-- Bagian Javascript -->
+<script>PullToRefresh.init({mainElement: '.swipe',onRefresh: function() {setTimeout(function() {window.location.reload();}, 100);}});</script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<!-- Akhir Bagian Javascript -->
+
+</body>
+</html>

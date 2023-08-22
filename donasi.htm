@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head><script src="js/color-modes.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aplikasi khusus untuk modem orbit dan hilink">
+<meta name="author" content="Muhammad Yusuf">
+<meta name="generator" content="Hugo 0.115.4">
+<title>Huawei Manager v9</title>
+
+<style>
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .b-example-divider {
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+  }
+
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .btn-bd-primary {
+    --bd-violet-bg: #712cf9;
+    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--bd-violet-bg);
+    --bs-btn-border-color: var(--bd-violet-bg);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: #6528e0;
+    --bs-btn-hover-border-color: #6528e0;
+    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #5a23c8;
+    --bs-btn-active-border-color: #5a23c8;
+  }
+  .bd-mode-toggle {
+    z-index: 1500;
+  }
+</style>
+
+<!-- Bagian CSS -->
+<link href="css/navbar-static.css" rel="stylesheet">
+<link href="css/grid.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/main.css" rel="stylesheet">
+<!-- Akhir Bagian CSS -->
+
+<!-- Bagian JS -->
+<script src="js/emui-jquery.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/carrier.js"></script>
+<script src="js/login.js"></script>
+<script src="js/ptr.js"></script>
+<!-- Akhir Bagian JS -->
+
+</head>
+<body class="bg-dark" style="color:white">
+  
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+<div class="container-fluid">
+<form>
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Set IP" onclick="B4A.CallSub('setIP', true)">
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Login" onclick="B4A.CallSub('login', true)">
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Home" onclick="B4A.CallSub('freeBrowse', true)">
+<input type="submit" class="btn btn-danger rounded-pill px-2" value="Reboot">
+<div id="confirmBox">
+<div class="message" style="color:red;font-size:100%;font-weight: bold;text-align:center"></div>
+<span class="btn btn-danger rounded-pill px-2 yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;
+<span class="btn btn-success rounded-pill px-2 no">&nbsp;&nbsp;&nbsp;&nbsp;No&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</div>
+<button class="btn btn-success rounded-pill px-1" type="button" id="dataon">ON</button>
+<button class="btn btn-danger rounded-pill px-1" type="button" id="dataoff">OFF</button>
+</form>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarCollapse">
+  <ul class="navbar-nav me-auto mb-2 mb-md-0">
+  <li><a class="nav-link" href="net.htm">Home</a></li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pesan</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/smsinbox.html?smsinbox',$(this).html())">Masuk <span id='smsCounts' class="smsCounts"></span></a></li>
+      <li><a class="dropdown-item" onclick="openPage('/smsinbox.html?smssent',$(this).html())">Keluar</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pengaturan SIM</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/mobileconnection.html',$(this).html())">On Off Data</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/profilesmgr.html',$(this).html())">Profile dan DNS</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/mobilenetworksettings.html',$(this).html())">Band</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/ussd.html',$(this).html())">USSD</a></li>
+      <li><a class="dropdown-item" onclick="B4A.CallSub('setBand', true)">Stabilkan Frekuensi</a></li>
+      <li><a class="dropdown-item" onclick="B4A.CallSub('clr', true)">Hapus Cookie</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pengaturan WiFi</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/wlanbasicsettings.html',$(this).html())">Dasar</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/wlanadvanced.html',$(this).html())">Lanjutan</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/wlanmacfilter.html',$(this).html())">Filter Mac Wlan</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/dhcp.html',$(this).html())">DHCP</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Keamanan</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/devicemanagement.html',$(this).html())">Perangkat Terhubung</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/statistic.html',$(this).html())">Statistik</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/urlfilter.html',$(this).html())">Filter Domain</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/macfilter.html',$(this).html())">Filter Mac</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/lanipfilter.html',$(this).html())">Filter IP</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/virtualserver.html',$(this).html())">Virtual Server</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/specialapplication.html',$(this).html())">Aplikasi Spesial</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/dmzsettings.html',$(this).html())">Setting DMZ</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/bridgemode.html',$(this).html())">Mode Bridge</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/upnp.html',$(this).html())">Setting UPnP</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/nat.html',$(this).html())">Setting NAT</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">System</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/deviceinformation.html',$(this).html())">Informasi Modem</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/antenna.html',$(this).html())">Setting Antena</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/restore.html',$(this).html())">Reset Modem</a></li>
+      <li><a class="dropdown-item" id="Restart">Restart Modem</a></li>
+      <li><a class="dropdown-item"  id="Shutdown">Shut Down Modem</a></li>
+    </ul>
+   </li>
+   <li class="nav-item dropdown">
+   <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Tentang MWNS</a>
+    <ul class="dropdown-menu">
+     <li><a class="dropdown-item" href="about.htm">About</a></li>
+     <li><a class="dropdown-item" href="disclaimer.htm">Disclaimer</a></li>
+     <li><a class="dropdown-item" href="privacy-policy.htm">Privacy Policy</a></li>
+     <li><a class="dropdown-item" href="contact.htm">Kontak</a></li>
+     <li><a class="dropdown-item" href="donasi.htm">Donasi</a></li>
+    </ul>
+   </li>
+      
+<br>
+<div style="text-align:center;color:white;font-weight:bold">
+Setup Bekerja Pada Beberapa Router
+<table style="width: 100%;margin:auto;border: 1px solid #8f8f8f">
+<tr style="border: 1px solid #8f8f8f">
+<td class='label' style="text-align:center;border: 1px solid #8f8f8f">Antena 1</td>
+<td style="font-size:12;text-align:center;color:white" id="antenna1">Tidak dikenal</td>
+</tr>
+<tr style="border: 1px solid #8f8f8f">
+<td class='label' style="text-align:center;border: 1px solid #8f8f8f">Antena 2</td>
+<td style="font-size:12;text-align:center;color:white" id="antenna2">Tidak dikenal</td>
+</tr>
+<tr style="border: 1px solid #8f8f8f">
+<td style="text-align:center" id="antcolor" colspan="2">
+<div id="infAntena" style="font-size:14px;font-weight:bold;text-align:center;color: rgb(208, 255, 0)">Klik Tampilkan data untuk mengganti antena</div>
+<select style="display:none;text-align:center;font-weight:bold" id='antenna'>
+<option value ="0">Otomatis</option>
+<option value ="2">Dalam</option>
+<option value ="1">Luar</option>
+<option value ="3">Gabungkan</option>
+</select>
+<select style="display:none;text-align:center;font-weight:bold" id='antennao'>
+<option value ="3">Otomatis</option>
+<option value ="0">Dalam</option>
+<option value ="1">Luar</option>
+<option value ="2">Gabungkan</option>
+</select>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input type="button" class="btn" id="ReadAntenna" value="Lihat Data" style="border-radius: 10px;height:26px;width:82px">
+<input type="button" class="btn" id="SaveAntenna" value="Simpan" style="border-radius: 10px;display:none;height:26px;width:36px">
+<input type="button" class="btn" id="SaveAntennao" value="Simpan" style="border-radius: 10px;display:none;height:26px;width:36px">
+</td>
+</tr>
+</table>
+
+
+</ul>
+</div>
+</div>
+</nav>
+<div class="swipe">&nbsp;</div>
+<!-- Akhir Bagian Navbar -->
+
+<main>
+<center><h3>Donasi MWNS</h3></center>
+<hr>
+<p style="text-align:center">Anda bisa support kami di bawah ini</p>
+
+<div class="row mb-0 text-center">
+  <div class="col-4 themed-grid-col bg-success">BRI</div>
+  <div class="col-8 themed-grid-col bg-success">MUHAMMAD YUSUF, 453401017095532</div>
+</div>
+<div class="row mb-0 text-center">
+  <div class="col-4 themed-grid-col bg-success">Shopeepay</div>
+  <div class="col-8 themed-grid-col bg-success">087714249731, 087764241047</div>
+</div>
+<div class="row mb-0 text-center">
+  <div class="col-4 themed-grid-col bg-success">Dana</div>
+  <div class="col-8 themed-grid-col bg-success">087714249731, 087764241047</div>
+</div>
+<div class="row mb-0 text-center">
+  <div class="col-4 themed-grid-col bg-success">OVO</div>
+  <div class="col-8 themed-grid-col bg-success">087714249731</div>
+</div>
+<div class="row mb-0 text-center">
+  <div class="col-4 themed-grid-col bg-success">Pulsa</div>
+  <div class="col-8 themed-grid-col bg-success">087714249731, 087764241047</div>
+</div>
+<center><img src="images/qris.jpg" width="100%" height="550px"></center>
+</main>
+<!-- Akhir Konten Master -->
+
+<!-- Bagian Javascript -->
+<script>PullToRefresh.init({mainElement: '.swipe',onRefresh: function() {setTimeout(function() {window.location.reload();}, 100);}});</script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<!-- Akhir Bagian Javascript -->
+
+</body>
+</html>

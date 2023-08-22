@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head><script src="js/color-modes.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aplikasi khusus untuk modem orbit dan hilink">
+<meta name="author" content="Muhammad Yusuf">
+<meta name="generator" content="Hugo 0.115.4">
+<title>Huawei Manager v9</title>
+
+<style>
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .b-example-divider {
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+  }
+
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .btn-bd-primary {
+    --bd-violet-bg: #712cf9;
+    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--bd-violet-bg);
+    --bs-btn-border-color: var(--bd-violet-bg);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: #6528e0;
+    --bs-btn-hover-border-color: #6528e0;
+    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #5a23c8;
+    --bs-btn-active-border-color: #5a23c8;
+  }
+  .bd-mode-toggle {
+    z-index: 1500;
+  }
+</style>
+
+<!-- Bagian CSS -->
+<link href="css/navbar-static.css" rel="stylesheet">
+<link href="css/grid.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/main.css" rel="stylesheet">
+<!-- Akhir Bagian CSS -->
+
+<!-- Bagian JS -->
+<script src="js/emui-jquery.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/carrier.js"></script>
+<script src="js/login.js"></script>
+<script src="js/ptr.js"></script>
+<!-- Akhir Bagian JS -->
+
+</head>
+<body class="bg-dark" style="color:white">
+  
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+<div class="container-fluid">
+<form>
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Set IP" onclick="B4A.CallSub('setIP', true)">
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Login" onclick="B4A.CallSub('login', true)">
+<input type="button" class="btn btn-primary rounded-pill px-2" value="Home" onclick="B4A.CallSub('freeBrowse', true)">
+<input type="submit" class="btn btn-danger rounded-pill px-2" value="Reboot">
+<div id="confirmBox">
+<div class="message" style="color:red;font-size:100%;font-weight: bold;text-align:center"></div>
+<span class="btn btn-danger rounded-pill px-2 yes">&nbsp;&nbsp;&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;
+<span class="btn btn-success rounded-pill px-2 no">&nbsp;&nbsp;&nbsp;&nbsp;No&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</div>
+<button class="btn btn-success rounded-pill px-1" type="button" id="dataon">ON</button>
+<button class="btn btn-danger rounded-pill px-1" type="button" id="dataoff">OFF</button>
+</form>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarCollapse">
+  <ul class="navbar-nav me-auto mb-2 mb-md-0">
+  <li><a class="nav-link" href="net.htm">Home</a></li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pesan</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/smsinbox.html?smsinbox',$(this).html())">Masuk <span id='smsCounts' class="smsCounts"></span></a></li>
+      <li><a class="dropdown-item" onclick="openPage('/smsinbox.html?smssent',$(this).html())">Keluar</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pengaturan SIM</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/mobileconnection.html',$(this).html())">On Off Data</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/profilesmgr.html',$(this).html())">Profile dan DNS</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/mobilenetworksettings.html',$(this).html())">Band</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/ussd.html',$(this).html())">USSD</a></li>
+      <li><a class="dropdown-item" onclick="B4A.CallSub('setBand', true)">Stabilkan Frekuensi</a></li>
+      <li><a class="dropdown-item" onclick="B4A.CallSub('clr', true)">Hapus Cookie</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Pengaturan WiFi</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/wlanbasicsettings.html',$(this).html())">Dasar</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/wlanadvanced.html',$(this).html())">Lanjutan</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/wlanmacfilter.html',$(this).html())">Filter Mac Wlan</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/dhcp.html',$(this).html())">DHCP</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Keamanan</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/devicemanagement.html',$(this).html())">Perangkat Terhubung</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/statistic.html',$(this).html())">Statistik</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/urlfilter.html',$(this).html())">Filter Domain</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/macfilter.html',$(this).html())">Filter Mac</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/lanipfilter.html',$(this).html())">Filter IP</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/virtualserver.html',$(this).html())">Virtual Server</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/specialapplication.html',$(this).html())">Aplikasi Spesial</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/dmzsettings.html',$(this).html())">Setting DMZ</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/bridgemode.html',$(this).html())">Mode Bridge</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/upnp.html',$(this).html())">Setting UPnP</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/nat.html',$(this).html())">Setting NAT</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">System</a>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="openPage('/deviceinformation.html',$(this).html())">Informasi Modem</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/antenna.html',$(this).html())">Setting Antena</a></li>
+      <li><a class="dropdown-item" onclick="openPage('/restore.html',$(this).html())">Reset Modem</a></li>
+      <li><a class="dropdown-item" id="Restart">Restart Modem</a></li>
+      <li><a class="dropdown-item"  id="Shutdown">Shut Down Modem</a></li>
+    </ul>
+   </li>
+   <li class="nav-item dropdown">
+   <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Tentang MWNS</a>
+    <ul class="dropdown-menu">
+     <li><a class="dropdown-item" href="about.htm">About</a></li>
+     <li><a class="dropdown-item" href="disclaimer.htm">Disclaimer</a></li>
+     <li><a class="dropdown-item" href="privacy-policy.htm">Privacy Policy</a></li>
+     <li><a class="dropdown-item" href="contact.htm">Kontak</a></li>
+     <li><a class="dropdown-item" href="donasi.htm">Donasi</a></li>
+    </ul>
+   </li>
+      
+<br>
+<div style="text-align:center;color:white;font-weight:bold">
+Setup Bekerja Pada Beberapa Router
+<table style="width: 100%;margin:auto;border: 1px solid #8f8f8f">
+<tr style="border: 1px solid #8f8f8f">
+<td class='label' style="text-align:center;border: 1px solid #8f8f8f">Antena 1</td>
+<td style="font-size:12;text-align:center;color:white" id="antenna1">Tidak dikenal</td>
+</tr>
+<tr style="border: 1px solid #8f8f8f">
+<td class='label' style="text-align:center;border: 1px solid #8f8f8f">Antena 2</td>
+<td style="font-size:12;text-align:center;color:white" id="antenna2">Tidak dikenal</td>
+</tr>
+<tr style="border: 1px solid #8f8f8f">
+<td style="text-align:center" id="antcolor" colspan="2">
+<div id="infAntena" style="font-size:14px;font-weight:bold;text-align:center;color: rgb(208, 255, 0)">Klik Tampilkan data untuk mengganti antena</div>
+<select style="display:none;text-align:center;font-weight:bold" id='antenna'>
+<option value ="0">Otomatis</option>
+<option value ="2">Dalam</option>
+<option value ="1">Luar</option>
+<option value ="3">Gabungkan</option>
+</select>
+<select style="display:none;text-align:center;font-weight:bold" id='antennao'>
+<option value ="3">Otomatis</option>
+<option value ="0">Dalam</option>
+<option value ="1">Luar</option>
+<option value ="2">Gabungkan</option>
+</select>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input type="button" class="btn" id="ReadAntenna" value="Lihat Data" style="border-radius: 10px;height:26px;width:82px">
+<input type="button" class="btn" id="SaveAntenna" value="Simpan" style="border-radius: 10px;display:none;height:26px;width:36px">
+<input type="button" class="btn" id="SaveAntennao" value="Simpan" style="border-radius: 10px;display:none;height:26px;width:36px">
+</td>
+</tr>
+</table>
+
+
+</ul>
+</div>
+</div>
+</nav>
+<div class="swipe">&nbsp;</div>
+<!-- Akhir Bagian Navbar -->
+
+<main>
+<center><h3>Privacy Policy MWNS</h3></center>
+<hr>
+<p>If you require any more information or have any questions about our site’s disclaimer, please feel free to contact us by email at myarachma92@gmail.com</p>
+<p>This Privacy Policy explains how MWNS Official, Inc., (“we” or “MWNS Official”) uses, protects, and discloses the information we collect when you use the MWNS Official services (the “Services”) through our website (http://MWNS Official.com) (“Site”), browser extensions (“Extensions”), applications on Devices (“Apps”), through APIs, and through third parties. A “Device” is any computer used to access the Services, including (without limitation to) a desktop, laptop, smartphone, tablet, or other consumer electronic device.</p>
+<p>We reserve the right to modify this Privacy Policy effective immediately following posting of the modified version on the Site. Your use of our Services following posting will constitute your acceptance of the modified version. If you do not accept the terms of this Privacy Policy, please do not use the Services. Changes to this privacy policy must be accepted by users before they can continue using our service.</p>
+<h3>THE INFORMATION WE COLLECT AND STORE</h3>
+<p>MWNS Official may collect and store the following information when running our Services.</p>
+<h3>Information You Provide</h3>
+<p>Depending on how you use the Services, you may be required to provide certain personally identifiable information (“Personal Information”), which may include, but is not limited to, your:</p>
+<li>Name</li>
+<li>Google Account (Email address)</li>
+<li>Your image and likeness if you include it in your google profile</li>
+<li>You may choose not to provide your Personal Information; however, if you do not provide your Personal Information you may not be able to use all the functions offered by the Services.</li>
+<p>For questions about your Personal Information on our Services, please contact myarachma92@gmail.com</p>
+<p>We also collect and store information you generate while using the Services (“User Content”). User Content may include, but is not limited to:</p>
+<h3>Class and lesson information</h3>
+<p>Student notes, responses, answers, and grades</p>
+<p>If you submit additional information to us regarding the functionality of the Service or any problems you encounter (“Feedback”), we may use this Feedback to improve the performance of the Service, provide customer service to you and others, and take any other actions in our business discretion.</p>
+<h3>Usage Data</h3>
+<p>In addition, when you use our Services, metadata concerning your User Content, and other interactions with our Services may be logged automatically.</p>
+<h3>HOW WE USE YOUR INFORMATION</h3>
+<p>We use your information:</p>
+<li>to provide and improve our Services,</li>
+<li>to administer your use of our Services,</li>
+<li>to better understand your needs and interests,</li>
+<li>to personalize and improve your experience</li>
+<li>to provide or offer software updates and product announcements</li>
+<li>to enhance current, and develop new, products and services</li>
+<li>If you submit Personal Information to us, we will only use it for the purpose you requested or for which it is collected or for any purpose you subsequently authorize.</li>
+<p>When you submit Feedback, it will include information necessary to identify you as a user and to help us identify any problems you are having. This includes the website you are on when submitting the Feedback.</p>
+<p>You grant MWNS Official an irrevocable, perpetual, royalty-free right and license to use the anonymous information we collect in any way. MWNS Official will not use anonymous information for behavioral targeting of advertisements or build a personal profile of a student for use other than supporting authorized educational/school purpose.</p>
+<p>MWNS Official does not access your contact information or address book within your mobile device. Nor does MWNS Official have any access to any of the personal information or credit card information that you have provided to Apple or Google to register for their services. You may choose to grant MWNS Official access to their google account contacts list for use in MWNS Official’s referral system. Contacts recieved in this way will not be used for purposes other than to send messages you initiate.</p>
+<h3>INFORMATION SHARING AND DISCLOSURE</h3>
+<p>Further, you agree that MWNS Official may transfer the anonymous information we collect in the event of any corporate restructuring or any sale, assignment or transfer of substantially all of its rights in the Apps.</p>
+<p>We may disclose information about you if we become subject to a subpoena or court order, or if we are otherwise legally required to disclose information. We may also use and disclose information about you to establish or exercise our legal rights, to enforce the Terms of Use, to assert and defend against legal claims, or if we believe such disclosure is necessary to investigate, prevent, or take other action regarding actual or suspected illegal or fraudulent activities or potential threats to the physical safety or well-being of any person. If we are involved in a merger, acquisition, or sale of all or a portion of our assets, your information may be transferred as part of that transaction, but we will notify you (for example, via email and/or a prominent notice on our website) of any change in control or use of your Personal Information or User Content, or if either become subject to a different Privacy Policy. We will also notify you of choices you may have regarding the information.</p>
+<p>MWNS Official will display your Personal Information in your profile page and elsewhere on our Services according to the preferences you set in your account. Any information you choose to provide should reflect how much you want others to know about you. Please consider carefully what information you disclose in your profile page and your desired level of anonymity. You can review and revise your profile information at any time. We do not sell your personal information to third parties. We may also share or disclose your information with your consent, for example if you use a third party application to access your account. Through certain features of our Services, you may also have the ability to make some of your information public. Public information may be broadly and quickly disseminated.</p>
+<p>Service Providers, Business Partners and Others. MWNS Official may use certain trusted third party companies and individuals to help us provide, analyze, and improve our Services (including but not limited to data storage, maintenance services, database management, web analytics, email communication, payment processing, and improvement of the Service’s features). These third parties may have access to your information only for purposes of performing these tasks on our behalf and under obligations similar to those in this Privacy Policy. As of the date this policy went into effect, we use:</p>
+<p>Linode’s virtual private server platform to host our web server</p>
+<p>MailChimp’s marketing platform to perform personalized email communication</p>
+<p>Intercom to provide chat and email customer support</p>
+<p>Third-Party Applications. MWNS Official may share your Information with a third party application with your consent, for example when you choose to embed such an application into a lesson with our Services. We are not responsible for what those parties do with your information, so you should make sure you trust the application and that it has a privacy policy acceptable to you.</p>
+<p>Non-private or Non-Personal Information. MWNS Official may disclose your non-private, aggregated, or otherwise non-personal information, such as usage statistics of our Services. However, in such cases, your usage data is aggregated with the usage data of others and does not identify you individually.</p>
+<h3>CHANGING OR DELETING YOUR INFORMATION</h3>
+<p>To delete your account, please email myarachma92@gmail.com.</p>
+<h3>LINKED SITES</h3>
+<p>Our Services may contain links to other Web sites whose privacy practices may differ from those of MWNS Official. If you submit personal Information to any of those sites, your Information is governed by their privacy statements. We encourage you to carefully read the privacy statement of any Web site you visit.</p>
+<h3>SECURITY</h3>
+<p>MWNS Official takes reasonable steps to help protect Information against loss, misuse, unauthorized access or disclosure. MWNS Official expressly disclaims any representation or warranty, whether express or implied, with respect to offering any definitive promise of security in connection with The anonymous information we collect.</p>
+<h3>OUR POLICY TOWARD CHILDREN</h3>
+<p>We are required under the Children’s Online Privacy Protection Act (COPPA), with limited exceptions, to obtain verifiable parental consent in order to collect, use, or disclose personal information from Children. COPPA allows the Child’s School to obtain consent for the online collection of personal information from Children who are students of the School.</p>
+<p>If a Child wants to use our Service, he/she must first obtain an Account from his/her School. Before an Account is provided to a School, we require that the School (on behalf of the Parent) (a) consent to the collection, use and disclosure of personal information of the Child, through the Service, in accordance with this Children’s Privacy Policy, and (b) agree that the Child’s online activities are subject to the Terms of Service.</p>
+<p>As required under COPPA, we allow Parents certain choices regarding the personal information submitted by their Children Parents should make any permitted requests with the School and have the School, as the Parent’s agent, pass on those requests to Company. We may rely on the instructions that we receive from the School that we reasonably believe are given by a Child’s Parent to the School. For example, if a representative from the Child’s School contacts us and provides the Account information we request, we may assume that the person calling is acting on behalf of the Child’s Parent.</p>
+<p>We provide Parents the following choices with respect to the collection, use, retention and disclosure of Personal Information. A Child’s registration information is always accessible to him/her. A Parent has the right to review her Child’s Personal Information, which the Parent can obtain by contacting her Child’s School. After reviewing the Child’s Personal Information, the Parent may ask us to update or delete the Child’s Personal Information by requesting such changes through the Child’s School. A Parent may prohibit us from sharing a Child’s Personal Information with a third party by requesting such prohibition through the Child’s School. Notwithstanding any such requests, we may continue to share a Child’s Personal Information with third parties for the Internal Purposes and Enforcement Purposes (each as described above).</p>
+<p>If a Parent chooses to prohibit any future collection, use or disclosure of the Child’s Personal Information, the Parent may do so by terminating the Child’s Account through the School, and requesting the deletion of the Child’s Personal Information through the School. Upon receiving such request from the Child’s School, we will delete the Child’s Account information from our live databases and all the information and data stored for such Account. Company will not have any liability whatsoever for any termination of the Account or related deletion of the Child’s Personal Information. When we delete Personal Information, it will be deleted from our active databases but may remain in our archives.</p>
+<h3>YOUR CONSENT</h3>
+<p>If you reside outside the U.S., the anonymous information we collect will be transferred to the U.S. and processed and stored there under U.S. privacy standards. By using the Services and providing Information to MWNS Official, you consent to the use, transfer and processing of the anonymous information we collect as set forth in this Privacy Policy, all of which activities will take place in the U.S.</p>
+<h3>HOW TO CONTACT US</h3>
+<p>If you have any questions about this Privacy Policy, please contact us at myarachma92@gmail.com.</p>
+</main>
+<!-- Akhir Konten Master -->
+
+<!-- Bagian Javascript -->
+<script>PullToRefresh.init({mainElement: '.swipe',onRefresh: function() {setTimeout(function() {window.location.reload();}, 100);}});</script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<!-- Akhir Bagian Javascript -->
+
+</body>
+</html>
